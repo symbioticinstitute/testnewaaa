@@ -1226,7 +1226,7 @@
                     "1:√2"
                 ],
                 answer: 2,
-                solution: "Let angles be θ and 2θ. Then θ + 2θ = 90° → θ=30°, 2θ=60°. So opposite to 30° is half hypotenuse, so ratio 1:2. But the question is ratio of opposite side to hypotenuse. Opposite to which angle? It says "the opposite side", but doesn't specify to which angle. Probably to the smaller angle. Opposite to 30° is half hypotenuse, so 1:2. Which is first option. But for 60°, opposite is (√3/2) hypotenuse, so √3:2. The question is ambiguous. Perhaps it means for the angle that is twice, so 60°, then opposite/hyp = sin60=√3/2, so ratio √3:2. Third option. I think it's better to assume it's for the larger angle. So answer should be √3:2."
+                solution: "Let angles be θ and 2θ. Then θ + 2θ = 90° → θ=30°, 2θ=60°. So opposite to 30° is half hypotenuse, so ratio 1:2. But the question is ratio of opposite side to hypotenuse. Opposite to which angle? It says \"the opposite side\", but doesn't specify to which angle. Probably to the smaller angle. Opposite to 30° is half hypotenuse, so 1:2. Which is first option. But for 60°, opposite is (√3/2) hypotenuse, so √3:2. The question is ambiguous. Perhaps it means for the angle that is twice, so 60°, then opposite/hyp = sin60=√3/2, so ratio √3:2. Third option. I think it's better to assume it's for the larger angle. So answer should be √3:2."
             },
             {
                 id: 24,
@@ -1562,173 +1562,190 @@
             }
         ];
         
-        // Wait for the DOM to be fully loaded before running the JavaScript
-        document.addEventListener('DOMContentLoaded', () => {
-            // State management
-            let currentQuestionIndex = 0;
-            let userAnswers = new Array(questions.length).fill(null);
-            let testStarted = false;
-            let totalSeconds = 90 * 60; // 90 minutes
-            let timerInterval;
+        // State management
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let testStarted = false;
+        let totalSeconds = 90 * 60; // 90 minutes
+        let timerInterval;
+        
+        // DOM Elements with null checks
+        const welcomeModal = document.getElementById('welcomeModal');
+        const startBtn = document.getElementById('startBtn');
+        const loginScreen = document.getElementById('loginScreen');
+        const loginBtn = document.getElementById('loginBtn');
+        const nameInput = document.getElementById('nameInput');
+        const passcodeInput = document.getElementById('passcodeInput');
+        const instructionsScreen = document.getElementById('instructionsScreen');
+        const beginTestBtn = document.getElementById('beginTestBtn');
+        const testInterface = document.getElementById('testInterface');
+        const timerContainer = document.getElementById('timerContainer');
+        const timeDisplay = document.getElementById('time');
+        const progressBar = document.getElementById('progressBar');
+        const questionNumber = document.getElementById('questionNumber');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const questionGrid = document.getElementById('questionGrid');
+        const answeredCount = document.getElementById('answeredCount');
+        const unansweredCount = document.getElementById('unansweredCount');
+        const currentQuestion = document.getElementById('currentQuestion');
+        const resultsScreen = document.getElementById('resultsScreen');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const resultsContent = document.getElementById('resultsContent');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const solutionContainer = document.getElementById('solutionContainer');
+        
+        // Initialize the test
+        function initTest() {
+            if (!questionGrid) return;
             
-            // DOM Elements
-            const welcomeModal = document.getElementById('welcomeModal');
-            const startBtn = document.getElementById('startBtn');
-            const loginScreen = document.getElementById('loginScreen');
-            const loginBtn = document.getElementById('loginBtn');
-            const nameInput = document.getElementById('nameInput');
-            const passcodeInput = document.getElementById('passcodeInput');
-            const instructionsScreen = document.getElementById('instructionsScreen');
-            const beginTestBtn = document.getElementById('beginTestBtn');
-            const testInterface = document.getElementById('testInterface');
-            const timerContainer = document.getElementById('timerContainer');
-            const timeDisplay = document.getElementById('time');
-            const progressBar = document.getElementById('progressBar');
-            const questionNumber = document.getElementById('questionNumber');
-            const questionText = document.getElementById('questionText');
-            const optionsContainer = document.getElementById('optionsContainer');
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const submitBtn = document.getElementById('submitBtn');
-            const questionGrid = document.getElementById('questionGrid');
-            const answeredCount = document.getElementById('answeredCount');
-            const unansweredCount = document.getElementById('unansweredCount');
-            const currentQuestion = document.getElementById('currentQuestion');
-            const resultsScreen = document.getElementById('resultsScreen');
-            const loadingSpinner = document.getElementById('loadingSpinner');
-            const resultsContent = document.getElementById('resultsContent');
-            const scoreDisplay = document.getElementById('scoreDisplay');
-            const solutionContainer = document.getElementById('solutionContainer');
-            
-            // Initialize the test
-            function initTest() {
-                // Create question grid
-                questionGrid.innerHTML = '';
-                for (let i = 0; i < questions.length; i++) {
-                    const gridItem = document.createElement('div');
-                    gridItem.className = 'grid-item';
-                    if (i === 0) gridItem.classList.add('current');
-                    gridItem.textContent = i + 1;
-                    gridItem.addEventListener('click', () => navigateToQuestion(i));
-                    questionGrid.appendChild(gridItem);
-                }
-                
-                // Load first question
-                loadQuestion(currentQuestionIndex);
+            // Create question grid
+            questionGrid.innerHTML = '';
+            for (let i = 0; i < questions.length; i++) {
+                const gridItem = document.createElement('div');
+                gridItem.className = 'grid-item';
+                if (i === 0) gridItem.classList.add('current');
+                gridItem.textContent = i + 1;
+                gridItem.addEventListener('click', () => navigateToQuestion(i));
+                questionGrid.appendChild(gridItem);
             }
             
-            // Load a question
-            function loadQuestion(index) {
-                const question = questions[index];
-                questionNumber.textContent = `Question ${index + 1} of ${questions.length}`;
-                questionText.innerHTML = question.text;
-                currentQuestion.textContent = index + 1;
+            // Load first question
+            loadQuestion(currentQuestionIndex);
+        }
+        
+        // Load a question
+        function loadQuestion(index) {
+            if (!questionNumber || !questionText || !optionsContainer || 
+                !currentQuestion || !prevBtn || !nextBtn || !submitBtn || !questionGrid) {
+                return;
+            }
+            
+            const question = questions[index];
+            questionNumber.textContent = `Question ${index + 1} of ${questions.length}`;
+            questionText.innerHTML = question.text;
+            currentQuestion.textContent = index + 1;
+            
+            // Clear previous options
+            optionsContainer.innerHTML = '';
+            
+            // Create new options
+            question.options.forEach((option, i) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                if (userAnswers[index] === i) {
+                    optionElement.classList.add('selected');
+                }
                 
-                // Clear previous options
-                optionsContainer.innerHTML = '';
+                const optionLabel = document.createElement('span');
+                optionLabel.className = 'option-label';
+                optionLabel.textContent = String.fromCharCode(65 + i); // A, B, C, D
                 
-                // Create new options
-                question.options.forEach((option, i) => {
-                    const optionElement = document.createElement('div');
-                    optionElement.className = 'option';
-                    if (userAnswers[index] === i) {
-                        optionElement.classList.add('selected');
-                    }
-                    
-                    const optionLabel = document.createElement('span');
-                    optionLabel.className = 'option-label';
-                    optionLabel.textContent = String.fromCharCode(65 + i); // A, B, C, D
-                    
-                    optionElement.appendChild(optionLabel);
-                    optionElement.appendChild(document.createTextNode(option));
-                    
-                    optionElement.addEventListener('click', () => selectOption(i));
-                    optionsContainer.appendChild(optionElement);
-                });
+                optionElement.appendChild(optionLabel);
+                optionElement.appendChild(document.createTextNode(option));
                 
-                // Update navigation buttons
-                prevBtn.disabled = index === 0;
-                nextBtn.style.display = index === questions.length - 1 ? 'none' : 'flex';
-                submitBtn.style.display = index === questions.length - 1 ? 'flex' : 'none';
-                
-                // Update question grid
-                const gridItems = document.querySelectorAll('.grid-item');
-                gridItems.forEach((item, i) => {
-                    item.classList.remove('current');
-                    if (userAnswers[i] !== null) {
-                        item.classList.add('answered');
-                    } else {
-                        item.classList.remove('answered');
-                    }
-                });
-                gridItems[index].classList.add('current');
-                
-                // Update counters
+                optionElement.addEventListener('click', () => selectOption(i));
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Update navigation buttons
+            prevBtn.disabled = index === 0;
+            nextBtn.style.display = index === questions.length - 1 ? 'none' : 'flex';
+            submitBtn.style.display = index === questions.length - 1 ? 'flex' : 'none';
+            
+            // Update question grid
+            const gridItems = document.querySelectorAll('.grid-item');
+            gridItems.forEach((item, i) => {
+                item.classList.remove('current');
+                if (userAnswers[i] !== null) {
+                    item.classList.add('answered');
+                } else {
+                    item.classList.remove('answered');
+                }
+            });
+            gridItems[index].classList.add('current');
+            
+            // Update counters
+            if (answeredCount && unansweredCount) {
                 const answered = userAnswers.filter(answer => answer !== null).length;
                 answeredCount.textContent = answered;
                 unansweredCount.textContent = questions.length - answered;
             }
+        }
+        
+        // Select an option
+        function selectOption(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            loadQuestion(currentQuestionIndex);
+        }
+        
+        // Navigate to a question
+        function navigateToQuestion(index) {
+            currentQuestionIndex = index;
+            loadQuestion(index);
+        }
+        
+        // Timer function
+        function startTimer() {
+            if (!timeDisplay || !progressBar) return;
             
-            // Select an option
-            function selectOption(optionIndex) {
-                userAnswers[currentQuestionIndex] = optionIndex;
-                loadQuestion(currentQuestionIndex);
-            }
-            
-            // Navigate to a question
-            function navigateToQuestion(index) {
-                currentQuestionIndex = index;
-                loadQuestion(index);
-            }
-            
-            // Timer function
-            function startTimer() {
-                timerInterval = setInterval(() => {
-                    totalSeconds--;
-                    const minutes = Math.floor(totalSeconds / 60);
-                    const seconds = totalSeconds % 60;
-                    
-                    timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                    
-                    // Update progress bar
-                    const progressPercentage = (totalSeconds / (90 * 60)) * 100;
-                    progressBar.style.width = `${progressPercentage}%`;
-                    
-                    // Color change when time is running out
-                    if (totalSeconds < 10 * 60) { // Less than 10 minutes
-                        progressBar.style.background = 'linear-gradient(135deg, var(--secondary), #b71c1c)';
-                    }
-                    
-                    if (totalSeconds <= 0) {
-                        clearInterval(timerInterval);
-                        submitTest();
-                    }
-                }, 1000);
-            }
-            
-            // Submit test
-            function submitTest() {
-                clearInterval(timerInterval);
-                testInterface.style.display = 'none';
-                resultsScreen.style.display = 'flex';
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
                 
-                // Show loading spinner
-                setTimeout(() => {
-                    loadingSpinner.style.display = 'none';
-                    resultsContent.style.display = 'block';
-                    
-                    // Calculate score
-                    let score = 0;
-                    questions.forEach((q, i) => {
-                        if (userAnswers[i] === q.answer) {
-                            score++;
-                        }
-                    });
-                    
-                    // Display score
+                timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Update progress bar
+                const progressPercentage = (totalSeconds / (90 * 60)) * 100;
+                progressBar.style.width = `${progressPercentage}%`;
+                
+                // Color change when time is running out
+                if (totalSeconds < 10 * 60) { // Less than 10 minutes
+                    progressBar.style.background = 'linear-gradient(135deg, var(--secondary), #b71c1c)';
+                }
+                
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    submitTest();
+                }
+            }, 1000);
+        }
+        
+        // Submit test
+        function submitTest() {
+            if (!testInterface || !resultsScreen || !loadingSpinner || 
+                !resultsContent || !scoreDisplay || !solutionContainer) {
+                return;
+            }
+            
+            clearInterval(timerInterval);
+            testInterface.style.display = 'none';
+            resultsScreen.style.display = 'flex';
+            
+            // Show loading spinner
+            setTimeout(() => {
+                if (loadingSpinner) loadingSpinner.style.display = 'none';
+                if (resultsContent) resultsContent.style.display = 'block';
+                
+                // Calculate score
+                let score = 0;
+                questions.forEach((q, i) => {
+                    if (userAnswers[i] === q.answer) {
+                        score++;
+                    }
+                });
+                
+                // Display score
+                if (scoreDisplay) {
                     scoreDisplay.innerHTML = `${score}<span style="font-size:2rem;">/</span>${questions.length}`;
-                    
-                    // Populate solutions
+                }
+                
+                // Populate solutions
+                if (solutionContainer) {
                     solutionContainer.innerHTML = '';
                     questions.forEach((q, i) => {
                         const solutionDiv = document.createElement('div');
@@ -1746,26 +1763,38 @@
                         solutionDiv.appendChild(solText);
                         solutionContainer.appendChild(solutionDiv);
                     });
-                }, 2000);
-            }
-            
-            // Event listeners
+                }
+            }, 2000);
+        }
+        
+        // Event listeners
+        if (startBtn) {
             startBtn.addEventListener('click', () => {
+                if (!welcomeModal || !loginScreen) return;
+                
                 welcomeModal.style.opacity = '0';
                 setTimeout(() => {
                     welcomeModal.style.display = 'none';
                     loginScreen.style.display = 'flex';
                 }, 300);
             });
-            
+        }
+        
+        if (nameInput && passcodeInput) {
             nameInput.addEventListener('input', validateLogin);
             passcodeInput.addEventListener('input', validateLogin);
-            
-            function validateLogin() {
+        }
+        
+        function validateLogin() {
+            if (loginBtn) {
                 loginBtn.disabled = !(nameInput.value.trim() && passcodeInput.value.trim());
             }
-            
+        }
+        
+        if (loginBtn) {
             loginBtn.addEventListener('click', () => {
+                if (!loginScreen || !instructionsScreen) return;
+                
                 if (nameInput.value.trim() === VALID_NAME && passcodeInput.value.trim() === VALID_PASSCODE) {
                     loginScreen.style.display = 'none';
                     instructionsScreen.style.display = 'flex';
@@ -1773,8 +1802,12 @@
                     alert("Invalid credentials. Please try again.");
                 }
             });
-            
+        }
+        
+        if (beginTestBtn) {
             beginTestBtn.addEventListener('click', () => {
+                if (!instructionsScreen || !testInterface || !timerContainer) return;
+                
                 instructionsScreen.style.display = 'none';
                 testInterface.style.display = 'flex';
                 timerContainer.style.display = 'flex';
@@ -1782,30 +1815,38 @@
                 startTimer();
                 initTest();
             });
-            
+        }
+        
+        if (prevBtn) {
             prevBtn.addEventListener('click', () => {
                 if (currentQuestionIndex > 0) {
                     currentQuestionIndex--;
                     loadQuestion(currentQuestionIndex);
                 }
             });
-            
+        }
+        
+        if (nextBtn) {
             nextBtn.addEventListener('click', () => {
                 if (currentQuestionIndex < questions.length - 1) {
                     currentQuestionIndex++;
                     loadQuestion(currentQuestionIndex);
                 }
             });
-            
+        }
+        
+        if (submitBtn) {
             submitBtn.addEventListener('click', () => {
                 if (confirm('Are you sure you want to submit your test? You cannot change your answers after submission.')) {
                     submitTest();
                 }
             });
-            
-            // Initialize the app
+        }
+        
+        // Initialize the app
+        if (welcomeModal) {
             welcomeModal.style.display = 'flex';
-        });
+        }
     </script>
 </body>
 </html>
