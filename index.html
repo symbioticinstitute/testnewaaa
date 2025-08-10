@@ -1601,6 +1601,7 @@
         // Initialize the test
         function initTest() {
             // Create question grid
+            questionGrid.innerHTML = '';
             for (let i = 0; i < questions.length; i++) {
                 const gridItem = document.createElement('div');
                 gridItem.className = 'grid-item';
