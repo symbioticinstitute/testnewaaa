@@ -5,8 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mathematics Proficiency Test</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+   <script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']],
+    processEscapes: true,
+    processEnvironments: true
+  },
+  options: {
+    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         :root {
             --primary: #1a4b8c;
@@ -220,6 +232,7 @@
 
         .form-group {
             margin-bottom: 25px;
+            position: relative;
         }
 
         .form-label {
@@ -502,7 +515,7 @@
 
         .question-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(6, 1fr);
             gap: 10px;
             margin-bottom: 25px;
         }
@@ -761,6 +774,11 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        .math-formula {
+            font-family: "Times New Roman", Times, serif;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -801,7 +819,7 @@
                 <div class="info-title">Test Information</div>
                 <div class="info-item">
                     <span>Total Questions:</span>
-                    <span>50</span>
+                    <span>60</span>
                 </div>
                 <div class="info-item">
                     <span>Duration:</span>
@@ -809,7 +827,7 @@
                 </div>
                 <div class="info-item">
                     <span>Topics Covered:</span>
-                    <span> key mathematical domains</span>
+                    <span>Basic arithmetic, fractions, exponents, probability, statistics, equations, logarithms, trigonometry, and more</span>
                 </div>
                 <div class="info-item">
                     <span>Scoring:</span>
@@ -842,8 +860,8 @@
         <div class="instructions-container">
             <h2 class="instructions-title">Test Guidelines</h2>
             <ul class="instructions-list">
-                <li>You have <strong>90 minutes</strong> to complete all 50 questions. The timer will be visible throughout the test.</li>
-                <li>This assessment covers eight mathematical domains: Fundamentals, Algebra, Trigonometry, Inequalities, Functions, Exponential/Logarithmic Functions, Statistics, and Probability.</li>
+                <li>You have <strong>90 minutes</strong> to complete all 60 questions. The timer will be visible throughout the test.</li>
+                <li>This assessment covers mathematical domains: Basic arithmetic, fractions, exponents, probability, statistics, equations, logarithms, trigonometry, and more.</li>
                 <li>Each question carries equal weight (1 mark). There is no penalty for incorrect answers.</li>
                 <li>Use the question palette to navigate between questions. Answered questions will be highlighted in green.</li>
                 <li>You can change your answers at any time before submission by returning to the question.</li>
@@ -858,9 +876,9 @@
     <!-- Test Interface -->
     <div class="container" id="testInterface" style="display:none;">
         <div class="questions-panel">
-            <div class="question-number" id="questionNumber">Question 1 of 50</div>
+            <div class="question-number" id="questionNumber">Question 1 of 60</div>
             <div class="question-text" id="questionText">
-                Let \( z_1 \) and \( z_2 \) be two complex numbers such that \( \overline{z_1} = i \, \overline{z_2} \) and \(\arg \left( \frac{\overline{z_1}}{\overline{z_2}} \right) = \pi\). Then,
+                Simplify: \( 12 - 4 \times 3 + 18 \div 3^2 \)
             </div>
             
             <div class="options-container" id="optionsContainer">
@@ -892,7 +910,7 @@
             <div class="test-info">
                 <div class="info-item">
                     <span>Questions:</span>
-                    <span>50</span>
+                    <span>60</span>
                 </div>
                 <div class="info-item">
                     <span>Answered:</span>
@@ -900,7 +918,7 @@
                 </div>
                 <div class="info-item">
                     <span>Remaining:</span>
-                    <span id="unansweredCount">50</span>
+                    <span id="unansweredCount">60</span>
                 </div>
                 <div class="info-item">
                     <span>Current:</span>
@@ -916,7 +934,7 @@
             <div class="spinner" id="loadingSpinner"></div>
             <div id="resultsContent" style="display:none;">
                 <h2 class="results-title">Assessment Results</h2>
-                <div class="score-display">Your Score: <span class="score-value" id="scoreDisplay">0/50</span></div>
+                <div class="score-display">Your Score: <span class="score-value" id="scoreDisplay">0/60</span></div>
                 
                 <div class="solution-section">
                     <h3 class="solution-title">Detailed Solutions</h3>
@@ -943,624 +961,750 @@
         const VALID_NAME = "SYMBIOTIC";
         const VALID_PASSCODE = "MATH1";
         
-        // Comprehensive questions covering all topics with proper math formatting
+        // 60 questions covering the specified topics
         const questions = [
-            // Fundamentals (7 questions)
+            // Basic Arithmetic Operations (5 questions)
             {
                 id: 1,
-                text: "Simplify: \\( \\frac{3}{4} \\div \\frac{2}{5} \\times \\frac{1}{3} + \\left( \\frac{5}{6} - \\frac{1}{2} \\right) \\)",
+                text: "Simplify: \( 12 - 4 \times 3 + 18 \div 3^2 \)",
                 options: [
-                    "\\( \\frac{1}{2} \\)",
-                    "\\( \\frac{3}{4} \\)",
-                    "\\( \\frac{5}{8} \\)",
-                    "\\( \\frac{7}{12} \\)"
+                    "2",
+                    "6",
+                    "10",
+                    "14"
                 ],
-                answer: 2,
-                solution: "First, perform division: \\( \\frac{3}{4} \\div \\frac{2}{5} = \\frac{3}{4} \\times \\frac{5}{2} = \\frac{15}{8} \\). Then multiplication: \\( \\frac{15}{8} \\times \\frac{1}{3} = \\frac{15}{24} = \\frac{5}{8} \\). Next, subtraction in parentheses: \\( \\frac{5}{6} - \\frac{1}{2} = \\frac{5}{6} - \\frac{3}{6} = \\frac{2}{6} = \\frac{1}{3} \\). Finally, add: \\( \\frac{5}{8} + \\frac{1}{3} = \\frac{15}{24} + \\frac{8}{24} = \\frac{23}{24} \\)."
+                answer: 0,
+                solution: "Apply order of operations (PEMDAS/BODMAS): \( 3^2 = 9 \), then \( 18 \div 9 = 2 \), then \( 4 \times 3 = 12 \), then \( 12 - 12 + 2 = 2 \)."
             },
             {
                 id: 2,
-                text: "What is the value of \\( 3^2 \\times 2^3 \\div 6^1 + \\sqrt{16} - 5 \\)?",
+                text: "What is the result of \( (-15) \times (-4) \div (-6) \)?",
                 options: [
-                    "6",
-                    "8",
                     "10",
-                    "12"
+                    "-10",
+                    "36",
+                    "-36"
                 ],
-                answer: 0,
-                solution: "Calculate step by step: \\( 3^2 = 9 \\), \\( 2^3 = 8 \\), so \\( 9 \\times 8 = 72 \\). \\( 6^1 = 6 \\), so \\( 72 \\div 6 = 12 \\). \\( \\sqrt{16} = 4 \\). Then \\( 12 + 4 - 5 = 11 \\)."
+                answer: 1,
+                solution: "Multiply first: \( (-15) \times (-4) = 60 \), then divide: \( 60 \div (-6) = -10 \)."
             },
             {
                 id: 3,
-                text: "Solve for x: \\( 3(2x - 5) + 7 = 4x - 2(3 - x) \\)",
+                text: "Calculate: \( 7 - 2(5 - 8)^2 + 12 \div 4 \)",
                 options: [
-                    "x = 4",
-                    "x = 5",
-                    "x = 6",
-                    "x = 7"
+                    "-8",
+                    "-11",
+                    "4",
+                    "16"
                 ],
-                answer: 0,
-                solution: "Expand both sides: Left side: \\( 3 \\times 2x - 3 \\times 5 + 7 = 6x - 15 + 7 = 6x - 8 \\). Right side: \\( 4x - 2 \\times 3 + 2 \\times x = 4x - 6 + 2x = 6x - 6 \\). So equation is \\( 6x - 8 = 6x - 6 \\)."
+                answer: 1,
+                solution: "Inside parentheses: \( 5 - 8 = -3 \), then square: \( (-3)^2 = 9 \), then multiply: \( 2 \times 9 = 18 \), then divide: \( 12 \div 4 = 3 \), then final: \( 7 - 18 + 3 = -11 \)."
             },
             {
                 id: 4,
-                text: "If the probability of event A is 0.4 and event B is 0.5, and they are independent, what is P(A or B)?",
+                text: "Find the value of \( | -12 + 8 | - | 5 - 9 | \)",
                 options: [
-                    "0.7",
-                    "0.8",
-                    "0.9",
-                    "0.2"
+                    "0",
+                    "4",
+                    "8",
+                    "12"
                 ],
                 answer: 0,
-                solution: "For independent events, P(A or B) = P(A) + P(B) - P(A and B). Since independent, P(A and B) = P(A) × P(B) = 0.4 × 0.5 = 0.2. So P(A or B) = 0.4 + 0.5 - 0.2 = 0.7."
+                solution: "First absolute: \( | -12 + 8 | = | -4 | = 4 \), second absolute: \( | 5 - 9 | = | -4 | = 4 \), then subtract: \( 4 - 4 = 0 \)."
             },
             {
                 id: 5,
-                text: "What is the mean of the data set: 12, 15, 18, 22, 25, 28?",
+                text: "What is \( 25\\% \) of 240 increased by 15?",
                 options: [
-                    "18.5",
-                    "20.0",
-                    "20.5",
-                    "21.0"
+                    "60",
+                    "75",
+                    "85",
+                    "95"
                 ],
                 answer: 1,
-                solution: "Mean = (sum of values) / (number of values) = (12+15+18+22+25+28)/6 = 120/6 = 20."
+                solution: "25% of 240 is \( 0.25 \times 240 = 60 \), increased by 15: \( 60 + 15 = 75 \)."
             },
+            
+            // Operations on Fractions (5 questions)
             {
                 id: 6,
-                text: "Convert \\( \\frac{3\\pi}{4} \\) radians to degrees.",
+                text: "Simplify: \( \\frac{3}{4} + \\frac{2}{5} - \\frac{1}{2} \)",
                 options: [
-                    "120°",
-                    "135°",
-                    "150°",
-                    "180°"
+                    "\( \\frac{13}{20} \)",
+                    "\( \\frac{9}{10} \)",
+                    "\( \\frac{7}{10} \)",
+                    "\( \\frac{11}{20} \)"
                 ],
-                answer: 1,
-                solution: "To convert radians to degrees, multiply by 180/π. So \\( \\frac{3\\pi}{4} \\times \\frac{180}{\\pi} = \\frac{3}{4} \\times 180 = 135^{\\circ} \\)."
+                answer: 0,
+                solution: "Find common denominator (20): \( \\frac{15}{20} + \\frac{8}{20} - \\frac{10}{20} = \\frac{13}{20} \)."
             },
             {
                 id: 7,
-                text: "Factorize completely: \\( 6x^2 - 7x - 3 \\)",
+                text: "Multiply and simplify: \( \\frac{5}{6} \\times \\frac{9}{10} \\div \\frac{3}{4} \)",
                 options: [
-                    "\\( (2x - 3)(3x + 1) \\)",
-                    "\\( (3x - 1)(2x + 3) \\)",
-                    "\\( (6x - 1)(x + 3) \\)",
-                    "\\( (3x - 3)(2x + 1) \\)"
+                    "\( \\frac{1}{2} \)",
+                    "1",
+                    "\( \\frac{3}{2} \)",
+                    "2"
                 ],
-                answer: 0,
-                solution: "To factor \\( 6x^2 - 7x - 3 \\), find two numbers that multiply to 6×(-3)= -18 and add to -7. The numbers are -9 and 2. So rewrite: \\( 6x^2 -9x +2x -3 = 3x(2x-3) +1(2x-3) = (3x+1)(2x-3) \\)."
+                answer: 1,
+                solution: "Multiply: \( \\frac{5}{6} \\times \\frac{9}{10} = \\frac{45}{60} = \\frac{3}{4} \), then divide by \( \\frac{3}{4} \): \( \\frac{3}{4} \\div \\frac{3}{4} = 1 \)."
             },
-            
-            // Algebra of Polynomials (6 questions)
             {
                 id: 8,
-                text: "If the polynomial \\( p(x) = x^3 - 4x^2 + x + 6 \\) has roots a, b, c, what is the value of ab + bc + ca?",
+                text: "Which fraction is equivalent to \( 0.\\overline{6} \)?",
                 options: [
-                    "1",
-                    "2",
-                    "3",
-                    "4"
+                    "\( \\frac{2}{3} \)",
+                    "\( \\frac{3}{5} \)",
+                    "\( \\frac{6}{10} \)",
+                    "\( \\frac{7}{11} \)"
                 ],
                 answer: 0,
-                solution: "For a cubic polynomial \\( x^3 + px^2 + qx + r \\), sum of roots a+b+c = -p. Here p(x) = \\( x^3 -4x^2 +x+6 \\), so sum of roots a+b+c = 4. Sum of products two at a time ab+bc+ca = coefficient of x = 1."
+                solution: "Let x = 0.666..., then 10x = 6.666..., subtract: 9x = 6, so x = \( \\frac{6}{9} = \\frac{2}{3} \)."
             },
             {
                 id: 9,
-                text: "Divide \\( 2x^4 - 3x^3 + 4x^2 - 5x + 6 \\) by \\( x^2 - 3x + 2 \\)",
+                text: "Simplify: \( 2\\frac{3}{4} + 1\\frac{2}{3} - 3\\frac{1}{6} \)",
                 options: [
-                    "\\( 2x^2 + 3x + 4 \\)",
-                    "\\( 2x^2 + x + 3 \\)",
-                    "\\( 2x^2 - x + 2 \\)",
-                    "\\( 2x^2 + 3x - 2 \\)"
+                    "\( 1\\frac{1}{4} \)",
+                    "\( 1\\frac{1}{3} \)",
+                    "\( 1\\frac{1}{2} \)",
+                    "\( 1\\frac{3}{4} \)"
                 ],
-                answer: 1,
-                solution: "Use polynomial long division. Divide leading terms: \\( 2x^4 / x^2 = 2x^2 \\). Multiply divisor by \\( 2x^2 \\): \\( 2x^2(x^2-3x+2) = 2x^4 -6x^3 +4x^2 \\). Subtract: \\( (2x^4-3x^3+4x^2) - (2x^4-6x^3+4x^2) = 3x^3 \\)."
+                answer: 0,
+                solution: "Convert to improper fractions: \( \\frac{11}{4} + \\frac{5}{3} - \\frac{19}{6} \). Common denominator (12): \( \\frac{33}{12} + \\frac{20}{12} - \\frac{38}{12} = \\frac{15}{12} = 1\\frac{1}{4} \)."
             },
             {
                 id: 10,
-                text: "What is the remainder when \\( x^4 - 3x^3 + 2x^2 - 5x + 7 \\) is divided by \\( x - 2 \\)?",
+                text: "What is the reciprocal of \( 2 - \\frac{1}{3} \)?",
                 options: [
-                    "5",
-                    "7",
-                    "9",
-                    "11"
+                    "\( \\frac{3}{5} \)",
+                    "\( \\frac{5}{3} \)",
+                    "\( \\frac{2}{3} \)",
+                    "\( \\frac{3}{2} \)"
                 ],
                 answer: 0,
-                solution: "By Remainder Theorem, remainder is p(2) = \\( 2^4 -3*(2)^3 +2*(2)^2 -5*2 +7 = 16 - 24 + 8 -10 +7 = -3 \\)."
+                solution: "First calculate: \( 2 - \\frac{1}{3} = \\frac{6}{3} - \\frac{1}{3} = \\frac{5}{3} \), reciprocal is \( \\frac{3}{5} \)."
             },
+            
+            // Exponents and Radicals (5 questions)
             {
                 id: 11,
-                text: "If α and β are roots of \\( x^2 - 5x + 6 = 0 \\), what is \\( \\alpha^2 + \\beta^2 \\)?",
+                text: "Simplify: \( \\sqrt{50} + 2\\sqrt{18} - \\sqrt{72} \)",
                 options: [
-                    "13",
-                    "15",
-                    "17",
-                    "19"
+                    "\( 3\\sqrt{2} \)",
+                    "\( 4\\sqrt{2} \)",
+                    "\( 5\\sqrt{2} \)",
+                    "\( 6\\sqrt{2} \)"
                 ],
-                answer: 0,
-                solution: "\\( \\alpha + \\beta = 5 \\), \\( \\alpha\\beta = 6 \\). \\( \\alpha^2 + \\beta^2 = (\\alpha+\\beta)^2 - 2\\alpha\\beta = 25 - 12 = 13 \\)."
+                answer: 2,
+                solution: "Simplify radicals: \( \\sqrt{50} = 5\\sqrt{2} \), \( 2\\sqrt{18} = 2 \\times 3\\sqrt{2} = 6\\sqrt{2} \), \( \\sqrt{72} = 6\\sqrt{2} \). Then: \( 5\\sqrt{2} + 6\\sqrt{2} - 6\\sqrt{2} = 5\\sqrt{2} \)."
             },
             {
                 id: 12,
-                text: "Solve the system: \\( 2x + 3y = 7 \\), \\( 4x - y = 3 \\)",
+                text: "Evaluate: \( 8^{2/3} + 16^{3/4} - 27^{1/3} \)",
                 options: [
-                    "x=1, y=1",
-                    "x=2, y=1",
-                    "x=1, y=2",
-                    "x=2, y=2"
+                    "9",
+                    "11",
+                    "13",
+                    "15"
                 ],
-                answer: 1,
-                solution: "From second equation, y = 4x - 3. Plug into first: \\( 2x + 3(4x-3) = 7 \\) → \\( 2x +12x -9 =7 \\) → \\( 14x=16 \\) → \\( x=16/14=8/7 \\). Then \\( y=4*(8/7)-3=32/7 - 21/7=11/7 \\)."
+                answer: 0,
+                solution: "Calculate each term: \( 8^{2/3} = (\\sqrt[3]{8})^2 = 2^2 = 4 \), \( 16^{3/4} = (\\sqrt[4]{16})^3 = 2^3 = 8 \), \( 27^{1/3} = 3 \). Then: \( 4 + 8 - 3 = 9 \)."
             },
             {
                 id: 13,
-                text: "The sum of coefficients of the polynomial \\( (2x - 3)^4 \\) is:",
+                text: "Simplify: \( \\frac{3^{-2} \\times 9^{3/2}}{27^{-1/3}} \)",
                 options: [
-                    "1",
-                    "-1",
-                    "16",
-                    "81"
+                    "9",
+                    "27",
+                    "81",
+                    "243"
                 ],
                 answer: 0,
-                solution: "Sum of coefficients is p(1) = \\( (2*1 - 3)^4 = (-1)^4 = 1 \\)."
+                solution: "Express all terms with base 3: \( 3^{-2} \\times (3^2)^{3/2} \\div (3^3)^{-1/3} = 3^{-2} \\times 3^3 \\div 3^{-1} = 3^{-2+3-(-1)} = 3^2 = 9 \)."
             },
-            
-            // Trigonometry (6 questions)
             {
                 id: 14,
-                text: "If \\( \\sin \\theta = \\frac{3}{5} \\) and θ is in quadrant II, what is \\( \\tan \\theta \\)?",
+                text: "Rationalize the denominator: \( \\frac{4}{\\sqrt{5} - 1} \)",
                 options: [
-                    "\\( -\\frac{3}{4} \\)",
-                    "\\( -\\frac{4}{3} \\)",
-                    "\\( \\frac{3}{4} \\)",
-                    "\\( \\frac{4}{3} \\)"
+                    "\( \\sqrt{5} + 1 \)",
+                    "\( 2(\\sqrt{5} + 1) \)",
+                    "\( 4(\\sqrt{5} + 1) \)",
+                    "\( \\frac{\\sqrt{5} + 1}{4} \)"
                 ],
-                answer: 0,
-                solution: "In quadrant II, sin positive, cos negative. \\( \\sin \\theta = \\frac{3}{5} \\), so opposite=3, hypotenuse=5, adjacent=\\( \\sqrt{5^2-3^2}=\\sqrt{16}=4 \\). But since quadrant II, adjacent is negative, so \\( \\cos \\theta = -\\frac{4}{5} \\). \\( \\tan \\theta = \\frac{\\sin}{\\cos} = \\frac{3/5}{-4/5} = -\\frac{3}{4} \\)."
+                answer: 1,
+                solution: "Multiply numerator and denominator by conjugate: \( \\frac{4}{\\sqrt{5}-1} \\times \\frac{\\sqrt{5}+1}{\\sqrt{5}+1} = \\frac{4(\\sqrt{5}+1)}{5-1} = \\frac{4(\\sqrt{5}+1)}{4} = \\sqrt{5}+1 \)."
             },
             {
                 id: 15,
-                text: "Simplify: \\( \\frac{\\sin(90^\\circ - \\theta) \\cos(180^\\circ + \\theta)}{\\tan(270^\\circ - \\theta) \\sec(360^\\circ - \\theta)} \\)",
-                options: [
-                    "\\( \\sin \\theta \\)",
-                    "\\( \\cos \\theta \\)",
-                    "\\( -\\sin \\theta \\)",
-                    "\\( -\\cos \\theta \\)"
-                ],
-                answer: 3,
-                solution: "\\( \\sin(90-\\theta) = \\cos \\theta \\), \\( \\cos(180+\\theta) = -\\cos \\theta \\), \\( \\tan(270-\\theta) = \\cot \\theta \\), \\( \\sec(360-\\theta) = \\sec \\theta \\). So expression: \\( \\frac{\\cos \\theta \\cdot (-\\cos \\theta)}{\\cot \\theta \\cdot \\sec \\theta} \\)"
-            },
-            {
-                id: 16,
-                text: "Prove that \\( \\frac{1 + \\sin \\theta}{\\cos \\theta} = \\frac{\\cos \\theta}{1 - \\sin \\theta} \\)",
-                options: [
-                    "Always true",
-                    "True only when θ=0",
-                    "Never true",
-                    "True for some θ"
-                ],
-                answer: 0,
-                solution: "Cross multiply: \\( (1+\\sin\\theta)(1-\\sin\\theta) = \\cos\\theta \\cdot \\cos\\theta \\) → \\( 1 - \\sin^2\\theta = \\cos^2\\theta \\), which is true by Pythagorean identity."
-            },
-            {
-                id: 17,
-                text: "If \\( \\tan \\theta + \\cot \\theta = 2 \\), what is \\( \\tan^2\\theta + \\cot^2\\theta \\)?",
-                options: [
-                    "2",
-                    "4",
-                    "6",
-                    "8"
-                ],
-                answer: 0,
-                solution: "\\( \\tan \\theta + \\cot \\theta = 2 \\). Square both sides: \\( (\\tan \\theta + \\cot \\theta)^2 = 4 \\) → \\( \\tan^2\\theta + 2 \\tan\\theta \\cot\\theta + \\cot^2\\theta = 4 \\). Since \\( \\tan\\theta \\cot\\theta =1 \\), so \\( \\tan^2\\theta + 2 + \\cot^2\\theta =4 \\) → \\( \\tan^2\\theta + \\cot^2\\theta = 2 \\)."
-            },
-            {
-                id: 18,
-                text: "The value of \\( \\sin 75^\\circ \\) is:",
-                options: [
-                    "\\( \\frac{\\sqrt{6} - \\sqrt{2}}{4} \\)",
-                    "\\( \\frac{\\sqrt{6} + \\sqrt{2}}{4} \\)",
-                    "\\( \\frac{\\sqrt{3} + 1}{2\\sqrt{2}} \\)",
-                    "\\( \\frac{\\sqrt{3} - 1}{2\\sqrt{2}} \\)"
-                ],
-                answer: 1,
-                solution: "\\( \\sin(75) = \\sin(45+30) = \\sin45\\cos30 + \\cos45\\sin30 = \\frac{\\sqrt{2}}{2} \\cdot \\frac{\\sqrt{3}}{2} + \\frac{\\sqrt{2}}{2} \\cdot \\frac{1}{2} = \\frac{\\sqrt{2}}{2} \\left( \\frac{\\sqrt{3} + 1}{2} \\right) = \\frac{\\sqrt{2} (\\sqrt{3} + 1)}{4} = \\frac{\\sqrt{6} + \\sqrt{2}}{4} \\)."
-            },
-            {
-                id: 19,
-                text: "Solve for x: \\( 2 \\cos^2x - 3 \\cos x + 1 = 0 \\) for \\( 0 \\leq x \\leq 2\\pi \\)",
-                options: [
-                    "x=0, π/3, 5π/3",
-                    "x=0, π/3, π, 5π/3",
-                    "x=π/3, π, 5π/3",
-                    "x=0, π"
-                ],
-                answer: 1,
-                solution: "Let \\( u=\\cos x \\), then \\( 2u^2 -3u +1=0 \\). Factors: \\( (2u-1)(u-1)=0 \\). So \\( u=\\frac{1}{2} \\) or \\( u=1 \\). \\( \\cos x =1 \\) → \\( x=0, 2\\pi \\). \\( \\cos x =\\frac{1}{2} \\) → \\( x=\\frac{\\pi}{3}, \\frac{5\\pi}{3} \\)."
-            },
-            
-            // Trigonometry of Right Angle Triangle (6 questions)
-            {
-                id: 20,
-                text: "In a right triangle ABC, right-angled at C, if AB=10 cm, BC=6 cm, what is \\( \\sin A \\)?",
-                options: [
-                    "\\( \\frac{3}{5} \\)",
-                    "\\( \\frac{4}{5} \\)",
-                    "\\( \\frac{5}{6} \\)",
-                    "\\( \\frac{6}{10} \\)"
-                ],
-                answer: 0,
-                solution: "AC = \\( \\sqrt{AB^2 - BC^2} = \\sqrt{100 - 36} = \\sqrt{64} = 8 \\) cm. \\( \\sin A = \\frac{\\text{opposite}}{\\text{hypotenuse}} = \\frac{BC}{AB} = \\frac{6}{10} = \\frac{3}{5} \\)."
-            },
-            {
-                id: 21,
-                text: "A ladder 5 m long leans against a wall. If the foot of the ladder is 3 m from the wall, how high up the wall does the ladder reach?",
-                options: [
-                    "3 m",
-                    "4 m",
-                    "5 m",
-                    "6 m"
-                ],
-                answer: 1,
-                solution: "By Pythagoras, height \\( h = \\sqrt{5^2 - 3^2} = \\sqrt{25-9} = \\sqrt{16} = 4 \\) m."
-            },
-            {
-                id: 22,
-                text: "From the top of a 30 m high tower, the angle of depression of a car is 45°. How far is the car from the tower?",
-                options: [
-                    "15 m",
-                    "20 m",
-                    "30 m",
-                    "\\( 30\\sqrt{3} \\) m"
-                ],
-                answer: 2,
-                solution: "Angle of depression equals angle of elevation. So \\( \\tan 45^\\circ = \\frac{\\text{opposite}}{\\text{adjacent}} = \\frac{\\text{height}}{\\text{distance}} = \\frac{30}{d} \\). \\( \\tan 45^\\circ=1 \\), so \\( 1=\\frac{30}{d} \\) → \\( d=30 \\) m."
-            },
-            {
-                id: 23,
-                text: "In a right triangle, if one acute angle is twice the other, what is the ratio of the opposite side to the hypotenuse?",
-                options: [
-                    "1:2",
-                    "1:√3",
-                    "√3:2",
-                    "1:√2"
-                ],
-                answer: 2,
-                solution: "Let angles be θ and 2θ. Then \\( \\theta + 2\\theta = 90^\\circ \\) → \\( \\theta=30^\\circ \\), \\( 2\\theta=60^\\circ \\). So opposite to 60° is \\( \\frac{\\sqrt{3}}{2} \\) hypotenuse, so ratio \\( \\sqrt{3}:2 \\)."
-            },
-            {
-                id: 24,
-                text: "The sides of a right triangle are in arithmetic progression. If the shortest side is 6 cm, what is the hypotenuse?",
-                options: [
-                    "10 cm",
-                    "12 cm",
-                    "15 cm",
-                    "18 cm"
-                ],
-                answer: 0,
-                solution: "Sides: a-d, a, a+d. Shortest is a-d=6. Hypotenuse is the largest, so a+d. By Pythagoras: \\( (a-d)^2 + a^2 = (a+d)^2 \\) → \\( 36 + a^2 = a^2 + 2ad + d^2 \\) → \\( 36 = 2ad + d^2 \\). Also, \\( a = d+6 \\). Solve: \\( 36 = 2(d+6)d + d^2 = 3d^2 + 12d \\) → \\( d^2 +4d -12=0 \\). Solutions: d=2 or d=-6. Valid: d=2, a=8, hypotenuse=10 cm."
-            },
-            {
-                id: 25,
-                text: "In ΔABC, right-angled at B, if \\( \\tan C = \\frac{1}{\\sqrt{3}} \\), what is the value of \\( \\sin A \\)?",
-                options: [
-                    "\\( \\frac{1}{2} \\)",
-                    "\\( \\frac{1}{\\sqrt{2}} \\)",
-                    "\\( \\frac{\\sqrt{3}}{2} \\)",
-                    "1"
-                ],
-                answer: 2,
-                solution: "\\( \\tan C = \\frac{\\text{opposite}}{\\text{adjacent}} = \\frac{AB}{BC} = \\frac{1}{\\sqrt{3}} \\). So let AB=1, BC=\\( \\sqrt{3} \\), then AC=\\( \\sqrt{1+3}=2 \\). \\( \\sin A = \\frac{\\text{opposite}}{\\text{hypotenuse}} = \\frac{BC}{AC} = \\frac{\\sqrt{3}}{2} \\)."
-            },
-            
-            // Inequalities (5 questions)
-            {
-                id: 26,
-                text: "Solve the inequality: \\( 2x - 5 < 3x + 7 \leq 4x - 1 \\)",
-                options: [
-                    "\\( -12 \\leq x < 12 \\)",
-                    "\\( x \\geq 8 \\)",
-                    "\\( 8 \\leq x < 12 \\)",
-                    "\\( x > 12 \\)"
-                ],
-                answer: 2,
-                solution: "Split into two inequalities: \\( 2x - 5 < 3x + 7 \\) → \\( -5 - 7 < 3x - 2x \\) → \\( -12 < x \\). And \\( 3x + 7 \\leq 4x - 1 \\) → \\( 7 + 1 \\leq 4x - 3x \\) → \\( 8 \\leq x \\). Combining: \\( 8 \\leq x < 12 \\)"
-            },
-            {
-                id: 27,
-                text: "Which of the following is the solution to \\( |2x - 3| > 5 \\)?",
-                options: [
-                    "\\( x < -1 \\) or \\( x > 4 \\)",
-                    "\\( -1 < x < 4 \\)",
-                    "\\( x < 1 \\) or \\( x > 4 \\)",
-                    "\\( x > 4 \\)"
-                ],
-                answer: 0,
-                solution: "Absolute inequality: \\( |2x - 3| > 5 \\) means \\( 2x - 3 < -5 \\) or \\( 2x - 3 > 5 \\). First: \\( 2x < -2 \\) → \\( x < -1 \\). Second: \\( 2x > 8 \\) → \\( x > 4 \\). So \\( x < -1 \\) or \\( x > 4 \\)"
-            },
-            {
-                id: 28,
-                text: "Solve the inequality: \\( \\frac{x-2}{x+3} \\leq 0 \\)",
-                options: [
-                    "\\( -3 < x \\leq 2 \\)",
-                    "\\( x \\leq -3 \\) or \\( x \\geq 2 \\)",
-                    "\\( x < -3 \\) or \\( x \\geq 2 \\)",
-                    "\\( -3 \\leq x \\leq 2 \\)"
-                ],
-                answer: 0,
-                solution: "Critical points x=2 and x=-3. Test intervals: For x < -3, say x=-4: \\( \\frac{-6}{-1} = 6 > 0 \\) → not satisfied. For -3 < x < 2, say x=0: \\( \\frac{-2}{3} < 0 \\) → satisfied. For x > 2, say x=3: \\( \\frac{1}{6} > 0 \\) → not satisfied. At x=2: 0 ≤ 0 → satisfied. At x=-3 undefined. So \\( -3 < x \\leq 2 \\)"
-            },
-            {
-                id: 29,
-                text: "What is the solution set of \\( x^2 - 4x - 5 > 0 \\)?",
-                options: [
-                    "\\( x < -1 \\) or \\( x > 5 \\)",
-                    "\\( -1 < x < 5 \\)",
-                    "\\( x < -5 \\) or \\( x > 1 \\)",
-                    "\\( -5 < x < 1 \\)"
-                ],
-                answer: 0,
-                solution: "Factor: \\( (x-5)(x+1) > 0 \\). Critical points x=5, x=-1. Parabola opens upwards, so positive outside roots: \\( x < -1 \\) or \\( x > 5 \\)"
-            },
-            {
-                id: 30,
-                text: "The inequality \\( 3x - 7 \\geq 2x + 1 \\) is equivalent to:",
-                options: [
-                    "\\( x \\geq 8 \\)",
-                    "\\( x \\leq 8 \\)",
-                    "\\( x \\geq 6 \\)",
-                    "\\( x \\leq 6 \\)"
-                ],
-                answer: 0,
-                solution: "Solve: \\( 3x - 7 \\geq 2x + 1 \\) → \\( 3x - 2x \\geq 1 + 7 \\) → \\( x \\geq 8 \\)"
-            },
-            
-            // Functions (5 questions)
-            {
-                id: 31,
-                text: "If \\( f(x) = 2x^2 - 3x + 1 \\), what is \\( f(f(1)) \\)?",
-                options: [
-                    "1",
-                    "3",
-                    "9",
-                    "15"
-                ],
-                answer: 3,
-                solution: "First, \\( f(1) = 2(1)^2 - 3(1) + 1 = 2 - 3 + 1 = 0 \\). Then \\( f(f(1)) = f(0) = 2(0)^2 - 3(0) + 1 = 1 \\)"
-            },
-            {
-                id: 32,
-                text: "The domain of \\( f(x) = \\sqrt{4 - x^2} \\) is:",
-                options: [
-                    "\\( [-2, 2] \\)",
-                    "\\( (-\infty, -2) \\cup (2, \infty) \\)",
-                    "\\( [-4, 4] \\)",
-                    "\\( (-\infty, -4) \\cup (4, \infty) \\)"
-                ],
-                answer: 0,
-                solution: "The expression under square root must be non-negative: \\( 4 - x^2 \\geq 0 \\) → \\( x^2 \\leq 4 \\) → \\( -2 \\leq x \\leq 2 \\)"
-            },
-            {
-                id: 33,
-                text: "If \\( f(x) = x + 2 \\) and \\( g(x) = 3x - 1 \\), what is \\( (f \\circ g)(x) \\)?",
-                options: [
-                    "\\( 3x + 1 \\)",
-                    "\\( 3x + 2 \\)",
-                    "\\( 4x + 1 \\)",
-                    "\\( 3x - 1 \\)"
-                ],
-                answer: 0,
-                solution: "\\( (f \\circ g)(x) = f(g(x)) = f(3x-1) = (3x-1) + 2 = 3x + 1 \\)"
-            },
-            {
-                id: 34,
-                text: "Which function is the inverse of \\( f(x) = 2x - 3 \\)?",
-                options: [
-                    "\\( f^{-1}(x) = \\frac{x + 3}{2} \\)",
-                    "\\( f^{-1}(x) = \\frac{x - 3}{2} \\)",
-                    "\\( f^{-1}(x) = \\frac{x}{2} + 3 \\)",
-                    "\\( f^{-1}(x) = 2x + 3 \\)"
-                ],
-                answer: 0,
-                solution: "Set y = 2x - 3. Swap x and y: x = 2y - 3. Solve for y: x + 3 = 2y → y = \\( \\frac{x + 3}{2} \\)"
-            },
-            {
-                id: 35,
-                text: "If \\( f(x) = \\frac{1}{x-1} \\), what is \\( f(f(x)) \\)?",
-                options: [
-                    "\\( \\frac{x-1}{x-2} \\)",
-                    "\\( \\frac{x-1}{2-x} \\)",
-                    "\\( x \\)",
-                    "\\( \\frac{1}{x} \\)"
-                ],
-                answer: 1,
-                solution: "\\( f(f(x)) = f\\left( \\frac{1}{x-1} \\right) = \\frac{1}{\\frac{1}{x-1} - 1} = \\frac{1}{\\frac{1 - (x-1)}{x-1}} = \\frac{1}{\\frac{2-x}{x-1}} = \\frac{x-1}{2-x} \\)"
-            },
-            
-            // Exponential and Logarithmic Functions (5 questions)
-            {
-                id: 36,
-                text: "Solve for x: \\( 3^{x-1} = 27^{2x} \\)",
-                options: [
-                    "\\( x = -\\frac{1}{3} \\)",
-                    "\\( x = -\\frac{1}{2} \\)",
-                    "\\( x = 0 \\)",
-                    "\\( x = \\frac{1}{3} \\)"
-                ],
-                answer: 0,
-                solution: "Write 27 as 3^3: \\( 3^{x-1} = (3^3)^{2x} = 3^{6x} \\). Since bases equal, exponents equal: \\( x - 1 = 6x \\) → \\( -1 = 5x \\) → \\( x = -\\frac{1}{5} \\)"
-            },
-            {
-                id: 37,
-                text: "Simplify: \\( \\log_2 16 + \\log_3 9 - \\log_5 25 \\)",
+                text: "Solve for x: \( 2^{x+1} = 16 \)",
                 options: [
                     "2",
                     "3",
                     "4",
                     "5"
                 ],
-                answer: 2,
-                solution: "\\( \\log_2 16 = \\log_2 2^4 = 4 \\), \\( \\log_3 9 = \\log_3 3^2 = 2 \\), \\( \\log_5 25 = \\log_5 5^2 = 2 \\). So 4 + 2 - 2 = 4"
-            },
-            {
-                id: 38,
-                text: "Solve for x: \\( \\log_2 (x) + \\log_2 (x-2) = 3 \\)",
-                options: [
-                    "x=4",
-                    "x=6",
-                    "x=8",
-                    "x=10"
-                ],
-                answer: 0,
-                solution: "Combine logs: \\( \\log_2 [x(x-2)] = 3 \\) → \\( x(x-2) = 2^3 = 8 \\). So \\( x^2 - 2x - 8 = 0 \\). Factors: (x-4)(x+2)=0. Solutions x=4 or x=-2. But domain requires x>0 and x-2>0 → x>2. So x=4"
-            },
-            {
-                id: 39,
-                text: "Which expression is equivalent to \\( \\ln (x^2 y^3) - 2 \\ln z \\)?",
-                options: [
-                    "\\( \\ln \\left( \\frac{x^2 y^3}{z^2} \\right) \\)",
-                    "\\( \\ln (x^2 y^3 z^{-2}) \\)",
-                    "\\( 2 \\ln x + 3 \\ln y - 2 \\ln z \\)",
-                    "All of the above"
-                ],
-                answer: 3,
-                solution: "Using log properties: \\( \\ln (x^2 y^3) = \\ln x^2 + \\ln y^3 = 2 \\ln x + 3 \\ln y \\). Then subtract \\( 2 \\ln z = \\ln z^2 \\). So expression is \\( 2 \\ln x + 3 \\ln y - 2 \\ln z \\). Also, \\( \\ln \\left( \\frac{x^2 y^3}{z^2} \\right) = \\ln (x^2 y^3 z^{-2}) \\) which is equivalent."
-            },
-            {
-                id: 40,
-                text: "Solve for x: \\( e^{2x} - 3e^x + 2 = 0 \\)",
-                options: [
-                    "x=0, x=ln2",
-                    "x=0, x=ln3",
-                    "x=ln1, x=ln2",
-                    "x=ln2, x=ln3"
-                ],
-                answer: 0,
-                solution: "Let \\( u = e^x \\). Then equation: \\( u^2 - 3u + 2 = 0 \\). Factors: (u-1)(u-2)=0. So u=1 or u=2. Thus \\( e^x = 1 \\) → x=0, \\( e^x = 2 \\) → x=ln2"
+                answer: 1,
+                solution: "Write 16 as a power of 2: \( 16 = 2^4 \). So equation becomes: \( 2^{x+1} = 2^4 \), thus \( x+1 = 4 \), so \( x = 3 \)."
             },
             
-            // Statistics (5 questions)
+            // Basic Probability (5 questions)
             {
-                id: 41,
-                text: "The mean of five numbers is 20. If one number is removed, the mean becomes 18. What was the removed number?",
+                id: 16,
+                text: "A fair die is rolled. What is the probability of getting an even number or a number greater than 4?",
                 options: [
-                    "22",
-                    "24",
-                    "26",
-                    "28"
+                    "\( \\frac{1}{2} \)",
+                    "\( \\frac{2}{3} \)",
+                    "\( \\frac{3}{4} \)",
+                    "\( \\frac{5}{6} \)"
                 ],
-                answer: 2,
-                solution: "Sum of five numbers: 5 × 20 = 100. After removal, sum of four numbers: 4 × 18 = 72. So removed number is 100 - 72 = 28"
+                answer: 1,
+                solution: "Even numbers: 2,4,6; numbers >4: 5,6. Favorable outcomes: 2,4,5,6 (4 outcomes). Total outcomes: 6. Probability = \( \\frac{4}{6} = \\frac{2}{3} \)."
             },
             {
-                id: 42,
-                text: "What is the median of the data: 12, 15, 18, 22, 25, 28, 31?",
+                id: 17,
+                text: "A bag contains 5 red, 4 blue, and 6 green marbles. If one marble is drawn at random, what is the probability it is not blue?",
+                options: [
+                    "\( \\frac{4}{15} \)",
+                    "\( \\frac{11}{15} \)",
+                    "\( \\frac{2}{3} \)",
+                    "\( \\frac{3}{5} \)"
+                ],
+                answer: 1,
+                solution: "Total marbles: 5+4+6 = 15. Not blue means red or green: 5+6 = 11. Probability = \( \\frac{11}{15} \)."
+            },
+            {
+                id: 18,
+                text: "Two coins are tossed. What is the probability of getting at least one head?",
+                options: [
+                    "\( \\frac{1}{4} \)",
+                    "\( \\frac{1}{2} \)",
+                    "\( \\frac{3}{4} \)",
+                    "1"
+                ],
+                answer: 2,
+                solution: "Possible outcomes: HH, HT, TH, TT. Outcomes with at least one head: HH, HT, TH (3 outcomes). Probability = \( \\frac{3}{4} \)."
+            },
+            {
+                id: 19,
+                text: "In a class of 30 students, 18 are girls. If one student is selected at random, what is the probability it is a boy?",
+                options: [
+                    "\( \\frac{2}{5} \)",
+                    "\( \\frac{3}{5} \)",
+                    "\( \\frac{2}{3} \)",
+                    "\( \\frac{3}{4} \)"
+                ],
+                answer: 0,
+                solution: "Number of boys: 30 - 18 = 12. Probability = \( \\frac{12}{30} = \\frac{2}{5} \)."
+            },
+            {
+                id: 20,
+                text: "A card is drawn from a standard deck. What is the probability it is a heart or a king?",
+                options: [
+                    "\( \\frac{4}{13} \)",
+                    "\( \\frac{1}{13} \)",
+                    "\( \\frac{7}{52} \)",
+                    "\( \\frac{17}{52} \)"
+                ],
+                answer: 0,
+                solution: "Hearts: 13 cards, Kings: 4 cards, but King of Hearts is counted twice. So favorable: 13 + 4 - 1 = 16. Total cards: 52. Probability = \( \\frac{16}{52} = \\frac{4}{13} \)."
+            },
+            
+            // Basic Statistics (5 questions)
+            {
+                id: 21,
+                text: "Find the mean of the numbers: 12, 15, 18, 21, 24",
+                options: [
+                    "16",
+                    "17",
+                    "18",
+                    "19"
+                ],
+                answer: 2,
+                solution: "Mean = \( \\frac{12+15+18+21+24}{5} = \\frac{90}{5} = 18 \)."
+            },
+            {
+                id: 22,
+                text: "What is the median of the data set: 7, 3, 9, 5, 11, 1, 13?",
+                options: [
+                    "5",
+                    "7",
+                    "9",
+                    "11"
+                ],
+                answer: 1,
+                solution: "Order the values: 1, 3, 5, 7, 9, 11, 13. Middle value is 7."
+            },
+            {
+                id: 23,
+                text: "Calculate the range of: 14, 22, 8, 17, 25, 11",
+                options: [
+                    "14",
+                    "17",
+                    "19",
+                    "21"
+                ],
+                answer: 1,
+                solution: "Range = Maximum - Minimum = 25 - 8 = 17."
+            },
+            {
+                id: 24,
+                text: "What is the mode of: 3, 5, 7, 3, 2, 5, 3, 8, 5, 3",
+                options: [
+                    "3",
+                    "5",
+                    "7",
+                    "No mode"
+                ],
+                answer: 0,
+                solution: "3 appears 4 times, 5 appears 3 times, others appear once. So mode is 3."
+            },
+            {
+                id: 25,
+                text: "If the mean of five numbers is 20 and four of them are 15, 18, 22, 25, what is the fifth number?",
                 options: [
                     "18",
                     "20",
                     "22",
                     "25"
                 ],
+                answer: 1,
+                solution: "Sum of five numbers = 20 × 5 = 100. Sum of given four = 15+18+22+25 = 80. Fifth number = 100 - 80 = 20."
+            },
+            
+            // Linear & Quadratic Equations (5 questions)
+            {
+                id: 26,
+                text: "Solve for x: \( 3(x - 4) = 2x + 5 \)",
+                options: [
+                    "17",
+                    "18",
+                    "19",
+                    "20"
+                ],
+                answer: 0,
+                solution: "Expand: \( 3x - 12 = 2x + 5 \). Subtract 2x: \( x - 12 = 5 \). Add 12: \( x = 17 \)."
+            },
+            {
+                id: 27,
+                text: "Find the roots of the equation: \( x^2 - 5x + 6 = 0 \)",
+                options: [
+                    "2, 3",
+                    "-2, -3",
+                    "1, 6",
+                    "-1, -6"
+                ],
+                answer: 0,
+                solution: "Factor: \( (x-2)(x-3) = 0 \), so roots are x=2 and x=3."
+            },
+            {
+                id: 28,
+                text: "Solve the system: \( 2x + y = 7 \), \( x - y = 2 \)",
+                options: [
+                    "x=3, y=1",
+                    "x=2, y=3",
+                    "x=1, y=5",
+                    "x=4, y=-1"
+                ],
+                answer: 0,
+                solution: "Add the equations: \( 3x = 9 \), so x=3. Substitute: 3 - y = 2, so y=1."
+            },
+            {
+                id: 29,
+                text: "For what value of k does the equation \( x^2 + kx + 9 = 0 \) have equal roots?",
+                options: [
+                    "±3",
+                    "±6",
+                    "±9",
+                    "±12"
+                ],
+                answer: 1,
+                solution: "For equal roots, discriminant = 0: \( k^2 - 4(1)(9) = 0 \), so \( k^2 = 36 \), k=±6."
+            },
+            {
+                id: 30,
+                text: "The sum of two numbers is 15 and their product is 56. What are the numbers?",
+                options: [
+                    "7 and 8",
+                    "6 and 9",
+                    "5 and 10",
+                    "4 and 11"
+                ],
+                answer: 0,
+                solution: "Let numbers be x and y: x+y=15, xy=56. These satisfy quadratic: \( t^2 -15t +56=0 \), factors to (t-7)(t-8)=0, so numbers are 7 and 8."
+            },
+            
+            // Basic Logarithmic Properties (5 questions)
+            {
+                id: 31,
+                text: "Evaluate: \( \\log_2 16 + \\log_3 9 \)",
+                options: [
+                    "4",
+                    "5",
+                    "6",
+                    "7"
+                ],
                 answer: 2,
-                solution: "7 values, so median is the 4th value: 22"
+                solution: "\( \\log_2 16 = \\log_2 2^4 = 4 \), \( \\log_3 9 = \\log_3 3^2 = 2 \), sum = 4+2=6."
+            },
+            {
+                id: 32,
+                text: "Solve for x: \( \\log_5 x = 3 \)",
+                options: [
+                    "15",
+                    "125",
+                    "243",
+                    "625"
+                ],
+                answer: 1,
+                solution: "Rewrite in exponential form: \( x = 5^3 = 125 \)."
+            },
+            {
+                id: 33,
+                text: "Simplify: \( \\log 4 + \\log 5 \)",
+                options: [
+                    "\( \\log 9 \)",
+                    "\( \\log 20 \)",
+                    "\( 2\\log 2 \)",
+                    "\( \\log 1 \)"
+                ],
+                answer: 1,
+                solution: "Using product rule: \( \\log 4 + \\log 5 = \\log(4 \\times 5) = \\log 20 \)."
+            },
+            {
+                id: 34,
+                text: "Express as a single logarithm: \( 2\\log x - 3\\log y \)",
+                options: [
+                    "\( \\log \\frac{x^2}{y^3} \)",
+                    "\( \\log \\frac{2x}{3y} \)",
+                    "\( \\log(x^2 - y^3) \)",
+                    "\( \\log \\frac{x}{y} \)"
+                ],
+                answer: 0,
+                solution: "Using power rule and quotient rule: \( 2\\log x - 3\\log y = \\log x^2 - \\log y^3 = \\log \\frac{x^2}{y^3} \)."
+            },
+            {
+                id: 35,
+                text: "If \( \\log 2 ≈ 0.3010 \), what is \( \\log 20 \)?",
+                options: [
+                    "1.3010",
+                    "2.3010",
+                    "0.6990",
+                    "1.6990"
+                ],
+                answer: 0,
+                solution: "\( \\log 20 = \\log(2 \\times 10) = \\log 2 + \\log 10 ≈ 0.3010 + 1 = 1.3010 \)."
+            },
+            
+            // Basic Trigonometry (5 questions)
+            {
+                id: 36,
+                text: "In a right triangle, if sin θ = \( \\frac{3}{5} \), what is cos θ?",
+                options: [
+                    "\( \\frac{3}{4} \)",
+                    "\( \\frac{4}{5} \)",
+                    "\( \\frac{4}{3} \)",
+                    "\( \\frac{5}{4} \)"
+                ],
+                answer: 1,
+                solution: "sin θ = opposite/hypotenuse = 3/5. Using Pythagorean theorem, adjacent = √(5²-3²)=4. cos θ = adjacent/hypotenuse = 4/5."
+            },
+            {
+                id: 37,
+                text: "Simplify: \( \\sin^2 θ + \\cos^2 θ \)",
+                options: [
+                    "0",
+                    "1",
+                    "tan θ",
+                    "sec θ"
+                ],
+                answer: 1,
+                solution: "This is the Pythagorean identity: \( \\sin^2 θ + \\cos^2 θ = 1 \)."
+            },
+            {
+                id: 38,
+                text: "What is the value of tan 45°?",
+                options: [
+                    "0",
+                    "\( \\frac{1}{2} \)",
+                    "1",
+                    "\( \\sqrt{3} \)"
+                ],
+                answer: 2,
+                solution: "tan 45° = 1 (standard trigonometric value)."
+            },
+            {
+                id: 39,
+                text: "If cos θ = 0.6, what is sec θ?",
+                options: [
+                    "\( \\frac{3}{5} \)",
+                    "\( \\frac{4}{5} \)",
+                    "\( \\frac{5}{3} \)",
+                    "\( \\frac{5}{4} \)"
+                ],
+                answer: 2,
+                solution: "sec θ is the reciprocal of cos θ: sec θ = 1/0.6 = 5/3."
+            },
+            {
+                id: 40,
+                text: "Convert 150° to radians.",
+                options: [
+                    "\( \\frac{\\pi}{6} \)",
+                    "\( \\frac{\\pi}{4} \)",
+                    "\( \\frac{5\\pi}{6} \)",
+                    "\( \\frac{3\\pi}{2} \)"
+                ],
+                answer: 2,
+                solution: "To convert degrees to radians, multiply by π/180: 150 × π/180 = 5π/6."
+            },
+            
+            // Rationalize Denominator (5 questions)
+            {
+                id: 41,
+                text: "Rationalize: \( \\frac{3}{\\sqrt{7}} \)",
+                options: [
+                    "\( \\frac{3\\sqrt{7}}{7} \)",
+                    "\( \\frac{\\sqrt{7}}{3} \)",
+                    "\( 3\\sqrt{7} \)",
+                    "\( \\frac{7}{3\\sqrt{7}} \)"
+                ],
+                answer: 0,
+                solution: "Multiply numerator and denominator by √7: \( \\frac{3}{\\sqrt{7}} \\times \\frac{\\sqrt{7}}{\\sqrt{7}} = \\frac{3\\sqrt{7}}{7} \)."
+            },
+            {
+                id: 42,
+                text: "Rationalize: \( \\frac{5}{2+\\sqrt{3}} \)",
+                options: [
+                    "\( 10 - 5\\sqrt{3} \)",
+                    "\( 5(2-\\sqrt{3}) \)",
+                    "\( \\frac{10-5\\sqrt{3}}{7} \)",
+                    "\( 2-\\sqrt{3} \)"
+                ],
+                answer: 1,
+                solution: "Multiply numerator and denominator by conjugate (2-√3): \( \\frac{5}{2+\\sqrt{3}} \\times \\frac{2-\\sqrt{3}}{2-\\sqrt{3}} = \\frac{5(2-\\sqrt{3})}{4-3} = 5(2-\\sqrt{3}) \)."
             },
             {
                 id: 43,
-                text: "The standard deviation of a data set is 4. If each value is multiplied by 3, what is the new standard deviation?",
+                text: "Simplify: \( \\frac{\\sqrt{12}}{\\sqrt{3}} \)",
                 options: [
+                    "2",
+                    "\( 2\\sqrt{3} \)",
                     "4",
-                    "12",
-                    "16",
-                    "36"
+                    "\( \\sqrt{15} \)"
                 ],
-                answer: 1,
-                solution: "When all values multiplied by k, standard deviation multiplied by |k|. So 4 × 3 = 12"
+                answer: 0,
+                solution: "\( \\frac{\\sqrt{12}}{\\sqrt{3}} = \\sqrt{\\frac{12}{3}} = \\sqrt{4} = 2 \)."
             },
             {
                 id: 44,
-                text: "In a normal distribution with mean 50 and standard deviation 10, approximately what percentage of data falls between 40 and 60?",
+                text: "Rationalize: \( \\frac{1}{\\sqrt{5} - 2} \)",
                 options: [
-                    "50%",
-                    "68%",
-                    "95%",
-                    "99.7%"
+                    "\( \\sqrt{5} - 2 \)",
+                    "\( \\sqrt{5} + 2 \)",
+                    "\( \\frac{\\sqrt{5}+2}{5} \)",
+                    "\( \\frac{\\sqrt{5}+2}{9} \)"
                 ],
                 answer: 1,
-                solution: "40 to 60 is mean ±1 standard deviation. In normal distribution, about 68% of data within ±1σ"
+                solution: "Multiply numerator and denominator by conjugate (√5+2): \( \\frac{1}{\\sqrt{5}-2} \\times \\frac{\\sqrt{5}+2}{\\sqrt{5}+2} = \\frac{\\sqrt{5}+2}{5-4} = \\sqrt{5}+2 \)."
             },
             {
                 id: 45,
-                text: "The correlation coefficient r for a set of data is -0.85. This indicates:",
+                text: "Simplify: \( \\frac{3\\sqrt{2} + 2\\sqrt{3}}{\\sqrt{2}} \)",
                 options: [
-                    "Strong positive correlation",
-                    "Weak positive correlation",
-                    "Strong negative correlation",
-                    "Weak negative correlation"
-                ],
-                answer: 2,
-                solution: "|r| close to 1 indicates strong correlation. Negative sign indicates negative correlation."
-            },
-            
-            // Probability (5 questions)
-            {
-                id: 46,
-                text: "A fair die is rolled. What is the probability of getting a prime number?",
-                options: [
-                    "\\( \\frac{1}{2} \\)",
-                    "\\( \\frac{1}{3} \\)",
-                    "\\( \\frac{1}{6} \\)",
-                    "\\( \\frac{2}{3} \\)"
+                    "\( 3 + \\sqrt{6} \)",
+                    "\( 3 + 2\\sqrt{3} \)",
+                    "\( 3\\sqrt{2} + \\sqrt{6} \)",
+                    "\( 3 + \\frac{2\\sqrt{3}}{\\sqrt{2}} \)"
                 ],
                 answer: 0,
-                solution: "Prime numbers: 2,3,5 → three outcomes. Total outcomes: 6. Probability = 3/6 = 1/2"
+                solution: "Divide each term: \( \\frac{3\\sqrt{2}}{\\sqrt{2}} + \\frac{2\\sqrt{3}}{\\sqrt{2}} = 3 + \\frac{2\\sqrt{3}\\sqrt{2}}{2} = 3 + \\sqrt{6} \)."
+            },
+            
+            // Intercepts (5 questions)
+            {
+                id: 46,
+                text: "What is the x-intercept of the line \( 2x - 3y = 6 \)?",
+                options: [
+                    "(3, 0)",
+                    "(0, -2)",
+                    "(2, 0)",
+                    "(0, 3)"
+                ],
+                answer: 0,
+                solution: "Set y=0: 2x - 3(0) = 6, so 2x=6, x=3. X-intercept is (3, 0)."
             },
             {
                 id: 47,
-                text: "Two cards are drawn from a deck of 52 without replacement. What is the probability both are aces?",
+                text: "Find the y-intercept of the line \( y = -2x + 5 \)",
                 options: [
-                    "\\( \\frac{1}{221} \\)",
-                    "\\( \\frac{4}{52} \\times \\frac{3}{51} \\)",
-                    "\\( \\frac{1}{169} \\)",
-                    "\\( \\frac{4}{52} \\times \\frac{4}{51} \\)"
+                    "(0, 5)",
+                    "(5, 0)",
+                    "(0, -2)",
+                    "(-2, 0)"
                 ],
-                answer: 1,
-                solution: "First ace: 4/52, second ace: 3/51. So probability = \\( \\frac{4}{52} \\times \\frac{3}{51} = \\frac{1}{221} \\)"
+                answer: 0,
+                solution: "The equation is in slope-intercept form y=mx+b, where b is the y-intercept. So y-intercept is (0, 5)."
             },
             {
                 id: 48,
-                text: "A bag contains 5 red and 7 blue marbles. Two are drawn at random. What is the probability they are the same color?",
+                text: "What are the intercepts of the line \( \\frac{x}{4} + \\frac{y}{6} = 1 \)?",
                 options: [
-                    "\\( \\frac{31}{66} \\)",
-                    "\\( \\frac{35}{66} \\)",
-                    "\\( \\frac{5}{12} \\)",
-                    "\\( \\frac{7}{12} \\)"
+                    "x-intercept: (4,0), y-intercept: (0,6)",
+                    "x-intercept: (6,0), y-intercept: (0,4)",
+                    "x-intercept: (0,4), y-intercept: (6,0)",
+                    "x-intercept: (0,6), y-intercept: (4,0)"
                 ],
                 answer: 0,
-                solution: "P(both red) = \\( \\frac{5}{12} \\times \\frac{4}{11} = \\frac{20}{132} \\). P(both blue) = \\( \\frac{7}{12} \\times \\frac{6}{11} = \\frac{42}{132} \\). Total = \\( \\frac{20}{132} + \\frac{42}{132} = \\frac{62}{132} = \\frac{31}{66} \\)"
+                solution: "This is in intercept form. x-intercept when y=0: x/4=1, so x=4. y-intercept when x=0: y/6=1, so y=6."
             },
             {
                 id: 49,
-                text: "In a binomial experiment with n=5 trials and p=0.4, what is P(exactly 3 successes)?",
+                text: "At which point does the graph of \( y = x^2 - 4 \) cross the x-axis?",
                 options: [
-                    "0.2304",
-                    "0.3456",
-                    "0.1152",
-                    "0.2592"
+                    "(2,0) and (-2,0)",
+                    "(0,2) and (0,-2)",
+                    "(4,0) and (-4,0)",
+                    "(0,4) and (0,-4)"
                 ],
                 answer: 0,
-                solution: "Binomial formula: \\( P(k) = C(n,k) p^k (1-p)^{n-k} \\). \\( C(5,3) = 10 \\), \\( p^3 = (0.4)^3 = 0.064 \\), \\( (1-p)^2 = (0.6)^2 = 0.36 \\). So 10 × 0.064 × 0.36 = 0.2304"
+                solution: "Set y=0: x²-4=0, so x²=4, x=±2. The graph crosses at (2,0) and (-2,0)."
             },
             {
                 id: 50,
-                text: "If P(A) = 0.3, P(B) = 0.5, and P(A and B) = 0.15, are A and B independent?",
+                text: "What is the y-intercept of the quadratic function \( y = 2x^2 - 3x + 1 \)?",
                 options: [
-                    "Yes",
-                    "No",
-                    "Cannot be determined",
-                    "Only if mutually exclusive"
+                    "(0, 1)",
+                    "(1, 0)",
+                    "(0, 2)",
+                    "(0, -3)"
                 ],
                 answer: 0,
-                solution: "Check if P(A) × P(B) = P(A and B): 0.3 × 0.5 = 0.15. Yes, equal, so independent."
+                solution: "The y-intercept occurs when x=0: y = 2(0)² - 3(0) + 1 = 1. So y-intercept is (0,1)."
+            },
+            
+            // Basic Coordinate Geometry (5 questions)
+            {
+                id: 51,
+                text: "What is the distance between points (2,3) and (5,7)?",
+                options: [
+                    "5",
+                    "6",
+                    "7",
+                    "8"
+                ],
+                answer: 0,
+                solution: "Distance formula: √[(5-2)²+(7-3)²] = √[3²+4²] = √[9+16] = √25 = 5."
+            },
+            {
+                id: 52,
+                text: "What is the midpoint of the segment joining (-1,4) and (5,8)?",
+                options: [
+                    "(2,6)",
+                    "(3,6)",
+                    "(2,5)",
+                    "(3,5)"
+                ],
+                answer: 0,
+                solution: "Midpoint formula: [(-1+5)/2, (4+8)/2] = (4/2, 12/2) = (2,6)."
+            },
+            {
+                id: 53,
+                text: "What is the slope of the line passing through (3,7) and (5,11)?",
+                options: [
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                ],
+                answer: 0,
+                solution: "Slope = (y₂-y₁)/(x₂-x₁) = (11-7)/(5-3) = 4/2 = 2."
+            },
+            {
+                id: 54,
+                text: "Which point lies on the line y = 2x - 3?",
+                options: [
+                    "(2,1)",
+                    "(3,3)",
+                    "(4,5)",
+                    "(5,7)"
+                ],
+                answer: 2,
+                solution: "Check each point: For (4,5): 5 = 2(4) - 3 = 8 - 3 = 5. Yes."
+            },
+            {
+                id: 55,
+                text: "What is the equation of the line with slope -2 and y-intercept 4?",
+                options: [
+                    "y = -2x + 4",
+                    "y = 2x + 4",
+                    "y = -2x - 4",
+                    "y = 2x - 4"
+                ],
+                answer: 0,
+                solution: "Slope-intercept form: y = mx + b, where m is slope and b is y-intercept. So y = -2x + 4."
+            },
+            
+            // Converting to Decimal Fraction and Percentage (5 questions)
+            {
+                id: 56,
+                text: "Convert \( \\frac{3}{8} \) to a decimal.",
+                options: [
+                    "0.375",
+                    "0.38",
+                    "0.4",
+                    "0.425"
+                ],
+                answer: 0,
+                solution: "Divide 3 by 8: 3 ÷ 8 = 0.375."
+            },
+            {
+                id: 57,
+                text: "Express 0.65 as a fraction in simplest form.",
+                options: [
+                    "\( \\frac{13}{20} \)",
+                    "\( \\frac{65}{100} \)",
+                    "\( \\frac{7}{10} \)",
+                    "\( \\frac{3}{5} \)"
+                ],
+                answer: 0,
+                solution: "0.65 = 65/100 = 13/20 (divide numerator and denominator by 5)."
+            },
+            {
+                id: 58,
+                text: "What is 35% of 80?",
+                options: [
+                    "28",
+                    "30",
+                    "32",
+                    "35"
+                ],
+                answer: 0,
+                solution: "35% of 80 = 0.35 × 80 = 28."
+            },
+            {
+                id: 59,
+                text: "Convert \( \\frac{5}{6} \) to a percentage (rounded to nearest whole number).",
+                options: [
+                    "83%",
+                    "85%",
+                    "87%",
+                    "90%"
+                ],
+                answer: 0,
+                solution: "5 ÷ 6 ≈ 0.8333, which is 83.33%, rounded to 83%."
+            },
+            {
+                id: 60,
+                text: "If 40% of a number is 56, what is the number?",
+                options: [
+                    "140",
+                    "150",
+                    "160",
+                    "170"
+                ],
+                answer: 0,
+                solution: "Let the number be x: 0.4x = 56, so x = 56 ÷ 0.4 = 140."
             }
         ];
         
@@ -1647,7 +1791,11 @@
                 optionLabel.textContent = String.fromCharCode(65 + i); // A, B, C, D
                 
                 optionElement.appendChild(optionLabel);
-                optionElement.appendChild(document.createTextNode(option));
+                
+                // Create a span for the option text to ensure MathJax rendering
+                const optionTextSpan = document.createElement('span');
+                optionTextSpan.innerHTML = option;
+                optionElement.appendChild(optionTextSpan);
                 
                 optionElement.addEventListener('click', () => selectOption(i));
                 optionsContainer.appendChild(optionElement);
@@ -1677,13 +1825,16 @@
                 unansweredCount.textContent = questions.length - answered;
             }
             
-            // Re-render MathJax for the new question
-            if (MathJax.typesetPromise) {
-                MathJax.typesetPromise([questionText, optionsContainer]).catch((err) => {
-                    console.log('MathJax typeset error:', err);
-                });
-            }
+           // Re-render MathJax for the new question
+            setTimeout(() => {
+                if (window.MathJax && MathJax.typesetPromise) {
+                    MathJax.typesetPromise([questionText, optionsContainer]).catch((err) => {
+                        console.log('MathJax typeset error:', err);
+                    });
+                }
+            }, 100);
         }
+       
         
         // Select an option
         function selectOption(optionIndex) {
@@ -1774,14 +1925,15 @@
                     });
                     
                     // Render math in solutions
-                    if (MathJax.typesetPromise) {
-                        MathJax.typesetPromise([solutionContainer]).catch((err) => {
-                            console.log('MathJax typeset error:', err);
-                        });
-                    }
+                    setTimeout(() => {
+                        if (window.MathJax && MathJax.typesetPromise) {
+                            MathJax.typesetPromise([solutionContainer]).catch((err) => {
+                                console.log('MathJax typeset error:', err);
+                            });
+                        }
+                    }, 500);
                 }
             }, 2000);
-        }
         
         // Event listeners
         if (startBtn) {
@@ -1866,5 +2018,3 @@
     </script>
 </body>
 </html>
-
-
